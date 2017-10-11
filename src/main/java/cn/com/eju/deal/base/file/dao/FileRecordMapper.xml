@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.file.dao.FileRecordMapper">
+
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.base.file.model.FileRecord">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="fileNo" property="fileNo" jdbcType="VARCHAR" />
+		<result column="fileName" property="fileName" jdbcType="NVARCHAR" />
+		<result column="relateId" property="relateId" jdbcType="VARCHAR" />
+		<result column="fileTypeCode" property="fileTypeCode" jdbcType="VARCHAR" />
+		<result column="remark" property="remark" jdbcType="NVARCHAR" />
+		<result column="dateCreate" property="dateCreate" jdbcType="TIMESTAMP" />
+		<result column="userCreate" property="userCreate" jdbcType="INTEGER" />
+		<result column="delFlag" property="delFlag" jdbcType="BIT" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, fileNo, fileName, relateId, fileTypeCode, remark,
+		dateCreate,
+		userCreate, delFlag
+	</sql>
+
+	<!-- 查询-根据id -->
+	<select id="getById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM File_Record
+		<where>
+			delFlag = 0 AND id = #{id,jdbcType=INTEGER}
+		</where>
+	</select>
+
+	<!-- 查询-根据relateId -->
+	<select id="getByRelateId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM File_Record
+		<where>
+			delFlag = 0 AND relateId = #{relateId,jdbcType=VARCHAR}
+		</where>
+	</select>
+
+	<!-- 查询 list -->
+	<select id="queryList" parameterType="Map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM
+		File_Record
+		<where>
+			delFlag = 0
+			<if test="id != null and id != ''">
+  		  		<![CDATA[
+    				AND id = #{id,jdbcType=INTEGER}
+    			]]>
+			</if>
+
+			<if test="fileNo != null and fileNo != ''">
+  		  		<![CDATA[
+    				AND fileNo = #{fileNo,jdbcType=VARCHAR}
+    			]]>
+			</if>
+
+			<if test="fileName != null and fileName != ''">
+  		  		<![CDATA[
+    				AND fileName LIKE '%${fileName}%'
+    			]]>
+			</if>
+
+			<if test="relateId != null and relateId != ''">
+  		  		<![CDATA[
+    				AND relateId = #{relateId,jdbcType=VARCHAR}
+    			]]>
+			</if>
+
+			<if test="fileTypeCode != null and fileTypeCode != ''">
+  		  		<![CDATA[
+    				AND fileTypeCode = #{fileTypeCode,jdbcType=VARCHAR}
+    			]]>
+			</if>
+
+			<if test="remark != null and remark != ''">
+  		  		<![CDATA[
+    				AND remark LIKE '%${remark}%'
+    			]]>
+			</if>
+
+			<if test="dateCreate != null and dateCreate != ''">
+  		  		<![CDATA[
+    				AND dateCreate = #{dateCreate,jdbcType=TIMESTAMP}
+    			]]>
+			</if>
+
+			<if test="userCreate != null and userCreate != ''">
+  		  		<![CDATA[
+    				AND userCreate = #{userCreate,jdbcType=INTEGER}
+    			]]>
+			</if>
+
+			<if test="delFlag != null and delFlag != ''">
+                <![CDATA[AND delFlag = #{delFlag,jdbcType=BIT}]]>
+			</if>
+
+		</where>
+	</select>
+
+	<!-- 新增 -->
+	<insert id="create" parameterType="cn.com.eju.deal.base.file.model.FileRecord"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO
+		File_Record
+		(
+		fileNo,
+		fileName,
+		relateId, fileTypeCode, remark,
+		dateCreate,
+		userCreate, delFlag
+		)
+		VALUES
+		(
+		#{fileNo,jdbcType=VARCHAR},
+		#{fileName,jdbcType=NVARCHAR},
+		#{relateId,jdbcType=VARCHAR}, #{fileTypeCode,jdbcType=VARCHAR},
+		#{remark,jdbcType=NVARCHAR},
+		getDate(),
+		#{userCreate,jdbcType=INTEGER},
+		0
+		)
+	</insert>
+
+	<!-- 修改 -->
+	<update id="update" parameterType="cn.com.eju.deal.base.file.model.FileRecord">
+		update File_Record
+		<set>
+			<if test="fileNo != null">
+				fileNo = #{fileNo,jdbcType=VARCHAR},
+			</if>
+			<if test="fileName != null">
+				fileName = #{fileName,jdbcType=NVARCHAR},
+			</if>
+			<if test="relateId != null">
+				relateId = #{relateId,jdbcType=VARCHAR},
+			</if>
+			<if test="fileTypeCode != null">
+				fileTypeCode = #{fileTypeCode,jdbcType=VARCHAR},
+			</if>
+			<if test="remark != null">
+				remark = #{remark,jdbcType=NVARCHAR},
+			</if>
+			<if test="dateCreate != null">
+				dateCreate = #{dateCreate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userCreate != null">
+				userCreate = #{userCreate,jdbcType=INTEGER},
+			</if>
+			<if test="delFlag != null">
+				delFlag = #{delFlag,jdbcType=BIT},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<!-- 逻辑删除 -->
+	<delete id="deleteById" parameterType="java.lang.Integer">
+		UPDATE File_Record
+		SET
+		delFlag=1
+		<where>
+			id = #{id,jdbcType=INTEGER}
+		</where>
+	</delete>
+
+	<!-- 逻辑删除 by fileNo -->
+	<delete id="deleteByFileNo" parameterType="java.lang.String">
+		UPDATE File_Record
+		SET
+		delFlag=1
+		<where>
+			fileNo = #{fileNo,jdbcType=VARCHAR}
+		</where>
+	</delete>
+
+</mapper>

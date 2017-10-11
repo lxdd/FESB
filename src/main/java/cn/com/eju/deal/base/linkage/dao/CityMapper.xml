@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.linkage.dao.CityMapper">
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.base.linkage.model.City">
+		<id column="ID" property="id" jdbcType="INTEGER" />
+		<result column="provinceName" property="provinceName" jdbcType="VARCHAR" />
+		<result column="provinceNo" property="provinceNo" jdbcType="VARCHAR" />
+		<result column="CityName" property="cityName" jdbcType="VARCHAR" />
+		<result column="CityNo" property="cityNo" jdbcType="VARCHAR" />
+		<result column="FlagTrashed" property="flagTrashed" jdbcType="INTEGER" />
+		<result column="FlagDeleted" property="flagDeleted" jdbcType="INTEGER" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="ModDate" property="moddate" jdbcType="TIMESTAMP" />
+		<result column="ExDate" property="exDate" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, provinceName, provinceNo, CityName, CityNo,
+		FlagTrashed, FlagDeleted,
+		state,
+		ModDate, ExDate
+	</sql>
+
+	<select id="getById" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		FROM BAS_City
+		WHERE ID = #{id,jdbcType=INTEGER}
+	</select>
+	
+	<!-- 获取所有城市 -->
+	<select id="queryList" parameterType="Map" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		FROM BAS_City
+	</select>
+	
+	<!-- 获取所有城市 -->
+	<select id="getAll" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		FROM BAS_City
+	</select>
+
+</mapper>

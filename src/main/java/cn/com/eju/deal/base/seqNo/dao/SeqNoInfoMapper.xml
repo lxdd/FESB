@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.seqNo.dao.SeqNoInfoMapper">
+	<resultMap id="seqNoResultMap" type="cn.com.eju.deal.base.seqNo.model.SeqNoInfo">
+		<id column="seqValueId" property="seqValueId" />
+		<result column="seqTypeId" property="seqTypeId" />
+		<result column="seqTypeCode" property="seqTypeCode" />
+		<result column="seqTypeName" property="seqTypeName" />
+		<result column="seqValueIdx" property="seqValueIdx" />
+		<result column="valueType" property="valueType" />
+		<result column="valueFormat" property="valueFormat" />
+		<result column="constantValue" property="constantValue" />
+		<result column="initValue" property="initValue" />
+		<result column="nextValue" property="nextValue" />
+		<result column="maxValue" property="maxValue" />
+		<result column="step" property="step" />
+		<result column="paddingstr" property="paddingstr" />
+		<result column="paddingDirect" property="paddingDirect" />
+		<result column="paddinglength" property="paddinglength" />
+		<result column="seqValueIdx" property="seqValueIdx" />
+		<result column="version" property="version" />
+	</resultMap>
+	
+	<!-- 根据Id查询一条记录 -->
+	<select id="getFormatValueByCode" parameterType="string"
+		resultType="String">
+		SELECT
+		dicValue
+		FROM BAS_DictionaryValue
+		<where>
+			dicCode = #{seqTypeCode}
+		</where>
+	</select>
+	
+	<!-- 根据Id查询一条记录 -->
+	<select id="getListByTypeCode" parameterType="string" resultMap="seqNoResultMap">
+		SELECT
+		bt.seqTypeId,
+		bt.seqTypeCode,
+		bt.seqTypeName,
+		bv.seqValueId,
+		bv.valueType,
+		bv.valueFormat,
+		bv.constantValue,
+		bv.initValue,
+		bv.nextValue,
+		bv.maxValue,
+		bv.step,
+		bv.paddingstr,
+		bv.paddingDirect,
+		bv.paddinglength,
+		bv.seqValueIdx,
+		bv.version
+		FROM BAS_SeqType bt
+		INNER JOIN BAS_SeqValue bv
+		ON bv.seqTypeId = bt.seqTypeId
+		AND bv.delFlag ='N'
+		<where>
+			bt.seqTypeCode = #{seqTypeCode} and bt.delFlag='N'
+		</where>
+		order by bv.seqValueIdx
+	</select>
+	
+	<!-- 修改 -->
+	<update id="updateParam">
+		UPDATE BAS_SeqValue
+		SET
+		nextValue = #{newnextValue},
+		version = version+1
+		<where>
+			seqValueId = #{seqValueId} and version= #{version}
+		</where>
+	</update>
+
+</mapper>

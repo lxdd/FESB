@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.log.dao.ErrorLogMapper">
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.base.log.model.ErrorLog">
+
+		<id column="id" property="id" jdbcType="INTEGER" />
+
+		<result column="systemName" property="systemName" jdbcType="NVARCHAR" />
+
+		<result column="moduleName" property="moduleName" jdbcType="VARCHAR" />
+		<result column="className" property="className" jdbcType="VARCHAR" />
+		<result column="methodName" property="methodName" jdbcType="VARCHAR" />
+		<result column="parameter" property="parameter" jdbcType="NVARCHAR" />
+
+		<result column="ipAddress" property="ipAddress" jdbcType="VARCHAR" />
+		<result column="exceptionInfo" property="exceptionInfo"
+			jdbcType="NVARCHAR" />
+
+		<result column="description" property="description" jdbcType="NVARCHAR" />
+
+		<result column="userIdCreate" property="userIdCreate" jdbcType="INTEGER" />
+		<result column="dateCreate" property="dateCreate" jdbcType="TIMESTAMP" />
+		<result column="delFlag" property="delFlag" jdbcType="CHAR" />
+	</resultMap>
+
+
+	<sql id="Base_Column_List">
+		id, systemName, moduleName, className, methodName, parameter,
+		ipAddress, exceptionInfo, description, userIdCreate,
+		dateCreate,delFlag
+	</sql>
+
+	<!-- 新增 -->
+	<insert id="create" parameterType="cn.com.eju.deal.base.log.model.ErrorLog"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO LOG_Error (
+        systemName,
+		moduleName,
+		className,
+		methodName,
+		parameter,
+		ipAddress,
+		exceptionInfo,
+		description,
+
+		userIdCreate,
+		dateCreate,
+		delFlag
+		)
+		VALUES
+		(
+		#{systemName},
+		#{moduleName},
+		#{className},
+		#{methodName},
+		#{parameter},
+		#{ipAddress},
+		#{exceptionInfo},
+		#{description},
+		#{userIdCreate},
+		getDate(),
+		'N'
+		)
+	</insert>
+
+
+</mapper>

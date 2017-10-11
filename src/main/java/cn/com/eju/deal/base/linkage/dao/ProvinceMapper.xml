@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.linkage.dao.ProvinceMapper">
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.base.linkage.model.Province">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="provinceName" property="provinceName" jdbcType="VARCHAR" />
+		<result column="provinceNo" property="provinceNo" jdbcType="VARCHAR" />
+		<result column="modeDate" property="modeDate" jdbcType="TIMESTAMP" />
+		<result column="exDate" property="exDate" jdbcType="TIMESTAMP" />
+		<result column="state" property="state" jdbcType="INTEGER" />
+		<result column="flagTrashed" property="flagTrashed" jdbcType="INTEGER" />
+		<result column="flagDeleted" property="flagDeleted" jdbcType="INTEGER" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, provinceName, provinceNo, modeDate, exDate, state, flagTrashed,
+		flagDeleted
+	</sql>
+
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from BAS_Province
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+</mapper>

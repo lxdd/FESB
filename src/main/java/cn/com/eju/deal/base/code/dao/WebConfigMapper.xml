@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.code.dao.WebConfigMapper">
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.base.code.model.WebConfig">
+		<id column="webConfigId" property="webConfigId" jdbcType="INTEGER" />
+		<result column="webConfigName" property="webConfigName"
+			jdbcType="VARCHAR" />
+		<result column="webConfigValue" property="webConfigValue"
+			jdbcType="NVARCHAR" />
+		<result column="webConfigDesc" property="webConfigDesc"
+			jdbcType="NVARCHAR" />
+		<result column="dateCreate" property="dateCreate" jdbcType="TIMESTAMP" />
+		<result column="userIdCreate" property="userIdCreate" jdbcType="INTEGER" />
+		<result column="delFlag" property="delFlag" jdbcType="CHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		webConfigId, webConfigName, webConfigValue, webConfigDesc,
+		dateCreate,
+		userIdCreate,
+		delFlag
+	</sql>
+
+	<!-- 根据Id查询配置信息对象 -->
+	<select id="getByID" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BAS_WebConfig
+		where webConfigId = #{webConfigId,jdbcType=INTEGER}
+	</select>
+
+	<!-- 查询配置信息list -->
+	<select id="queryList" parameterType="Map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM BAS_WebConfig
+		WHERE delFlag = 'N'
+	</select>
+
+	<!-- 根据name查询配置信息对象 -->
+	<select id="getByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BAS_WebConfig
+		WHERE webConfigName = <![CDATA[#{webConfigName,jdbcType=VARCHAR}]]>
+	</select>
+
+	<!-- 逻辑删除 -->
+	<delete id="delete" parameterType="java.lang.Integer">
+		UDATE BAS_WebConfig
+		SET delFlag
+		= 'N'
+		WHERE webConfigId = #{webConfigId,jdbcType=INTEGER}
+	</delete>
+
+	<!-- 新增配置 -->
+	<insert id="save" parameterType="cn.com.eju.deal.base.code.model.WebConfig"
+		useGeneratedKeys="true" keyProperty="webConfigId">
+		INSERT INTO BAS_WebConfig
+		(
+		webConfigName,
+		webConfigValue,
+		webConfigDesc,
+		dateCreate,
+		userIdCreate,delFlag
+		)
+		VALUES
+		(
+		#{webConfigName,jdbcType=VARCHAR},
+		#{webConfigValue,jdbcType=NVARCHAR},
+		#{webConfigDesc,jdbcType=NVARCHAR},
+		getDate(),#{userIdCreate},'N'
+		)
+	</insert>
+
+	<!-- 更新配置 -->
+	<update id="update" parameterType="cn.com.eju.deal.base.code.model.WebConfig">
+		UPDATE BAS_WebConfig
+		<set>
+			<if test="webConfigName != null">
+				webConfigName = #{webConfigName,jdbcType=VARCHAR},
+			</if>
+			<if test="webConfigValue != null">
+				webConfigValue = #{webConfigValue,jdbcType=NVARCHAR},
+			</if>
+			<if test="webConfigDesc != null">
+				webConfigDesc = #{webConfigDesc,jdbcType=NVARCHAR},
+			</if>
+			<if test="dateCreate != null">
+				dateCreate = #{dateCreate,jdbcType=TIMESTAMP},
+			</if>
+			<if test="userIdCreate != null">
+				userIdCreate = #{userIdCreate,jdbcType=INTEGER},
+			</if>
+			<if test="delFlag != null">
+				delFlag = #{delFlag,jdbcType=CHAR},
+			</if>
+		</set>
+
+		<where>
+			where webConfigId = #{webConfigId,jdbcType=INTEGER}
+		</where>
+	</update>
+</mapper>

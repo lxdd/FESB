@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.fesb.dao.AuthAppsClientMapper">
+	
+	<!-- 获取认证 -->
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.fesb.model.AuthAppsClient">
+		<!-- <id column="appId" property="appId" jdbcType="INTEGER" />
+		<result column="appName" property="appName" jdbcType="NVARCHAR" />
+		<result column="appKey" property="appKey" jdbcType="NVARCHAR" />
+		<result column="appSecret" property="appSecret" jdbcType="NVARCHAR" />
+		<result column="authFlag" property="authFlag" jdbcType="BIT" />
+		<result column="ipbwFlag" property="ipbwFlag" jdbcType="BIT" />
+
+		<result column="resourceCode" property="resourceCode" jdbcType="VARCHAR" />
+		<result column="resourceUrl" property="resourceUrl" jdbcType="VARCHAR" />
+		<result column="systemAddr" property="systemAddr" jdbcType="VARCHAR" /> -->
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		appId, appName, appKey, appSecret, authFlag, ipbwFlag, dateCreate,
+		delFlag
+	</sql>
+	
+	<!-- 获取认证 -->
+	<select id="getAuthInfo" resultMap="BaseResultMap">
+		
+		SELECT ac.appName,ac.appKey,ac.appSecret,ac.authFlag,ac.ipbwFlag,sr.resourceCode,sr.resourceUrl,ss.systemAddr
+		
+		FROM dbo.FESB_AppsResourceMapping arm
+		
+		LEFT JOIN dbo.FESB_Apps_Client ac ON arm.appId = ac.appId
+		
+		LEFT JOIN dbo.FESB_Service_Resource sr ON arm.resourceId = sr.resourceId
+		
+		LEFT JOIN dbo.FESB_Service_System ss ON sr.systemId = ss.systemId
+		
+		WHERE  arm.delFlag = 0  AND ac.delFlag = 0 AND sr.delFlag=0 AND ss.delFlag = 0
+		
+		AND ac.appKey = #{appKey,jdbcType=NVARCHAR} AND sr.resourceCode = #{resourceCode,jdbcType=VARCHAR}
+		
+	</select>
+	
+	
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.code.dao.CommonCodeMapper">
+	<resultMap  id="codeMap" type="cn.com.eju.deal.base.code.model.Code">
+		<id column="dicId" property="dicId" />
+		<result column="typeId" property="typeId" />
+		<result column="dicGroup" property="dicGroup" />
+		<result column="dicCode" property="dicCode" />
+		<result column="dicValue" property="dicValue" />
+		<result column="dicSortNo" property="dicSortNo" />
+		<result column="dateCreate" property="dateCreate" />
+		<result column="delFlag" property="delFlag" />
+	</resultMap>
+
+  <select id="queryList"  parameterType="Map"  resultMap="codeMap">
+	  	SELECT
+  		  	a.dicId,
+  		  	a.typeId,
+  		  	b.typeName,
+  		  	a.dicGroup,
+  		  	a.dicCode,
+  		  	a.dicValue,
+  		  	a.dicSortNo
+	    FROM BAS_DictionaryValue a LEFT JOIN BAS_DictionaryType b ON a.typeId = b.typeId
+	    WHERE a.delFlag = 'N' and b.delFlag = 'N'
+        ORDER BY a.dicSortNo
+  	</select>
+
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.com.eju.deal.base.code.dao.WsWebConfigMapper">
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.base.code.model.WsWebConfig">
+		<id column="wsId" property="wsId" jdbcType="INTEGER" />
+		<result column="wsNo" property="wsNo" jdbcType="VARCHAR" />
+		<result column="wsKey" property="wsKey" jdbcType="VARCHAR" />
+		<result column="wsPwdVerifyFlag" property="wsPwdVerifyFlag"
+			jdbcType="INTEGER" />
+		<result column="wsUserName" property="wsUserName" jdbcType="NVARCHAR" />
+		<result column="wsUserPwd" property="wsUserPwd" jdbcType="VARCHAR" />
+		<result column="wsIpVerifyFlag" property="wsIpVerifyFlag"
+			jdbcType="INTEGER" />
+		<result column="wsDesc" property="wsDesc" jdbcType="NVARCHAR" />
+		<result column="dateCreate" property="dateCreate" jdbcType="TIMESTAMP" />
+		<result column="userIdCreate" property="userIdCreate" jdbcType="INTEGER" />
+		<result column="delFlag" property="delFlag" jdbcType="CHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		wsId, wsNo, wsKey, wsPwdVerifyFlag, wsUserName, wsUserPwd,
+		wsIpVerifyFlag,
+		wsDesc, dateCreate,
+		userIdCreate, delFlag
+	</sql>
+
+	<!-- 查询WS配置信息list -->
+	<select id="queryList" parameterType="Map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM WS_WebConfig
+		WHERE delFlag = 'N'
+	</select>
+
+	<!-- 根据wsKey获取配置 -->
+	<select id="getByWSKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM WS_WebConfig
+		<where>
+			delFlag='N' and wsKey = #{wsKey,jdbcType=VARCHAR}
+		</where>
+	</select>
+
+</mapper>

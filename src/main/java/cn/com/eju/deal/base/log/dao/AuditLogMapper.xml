@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.com.eju.deal.base.log.dao.AuditLogMapper">
+	<resultMap id="BaseResultMap" type="cn.com.eju.deal.base.log.model.AuditLog">
+
+		<id column="id" property="id" jdbcType="INTEGER" />
+
+		<result column="className" property="className" jdbcType="VARCHAR" />
+		<result column="methodName" property="methodName" jdbcType="VARCHAR" />
+		<result column="parameter" property="parameter" jdbcType="NVARCHAR" />
+
+		<result property="sqlContent" column="sqlContent" jdbcType="NVARCHAR" />
+		<result property="operateContent" column="operateContent"
+			jdbcType="NVARCHAR" />
+
+		<result column="ipAddress" property="ipAddress" jdbcType="VARCHAR" />
+
+		<result column="userIdCreate" property="userIdCreate" jdbcType="INTEGER" />
+		<result column="dateCreate" property="dateCreate" jdbcType="TIMESTAMP" />
+		<result column="delFlag" property="delFlag" jdbcType="CHAR" />
+	</resultMap>
+
+	<!-- 新增 -->
+	<insert id="create" parameterType="cn.com.eju.deal.base.log.model.AuditLog"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO LOG_Audit
+		(
+		className,
+		methodName,
+		parameter,
+		sqlContent,
+		operateContent,
+
+		ipAddress,
+
+		userIdCreate,
+		dateCreate,
+		delFlag
+		)
+		VALUES
+		(
+		#{className},
+		#{methodName},
+		#{parameter},
+		#{sqlContent},
+		#{operateContent},
+
+		#{ipAddress},
+
+		#{userIdCreate},
+		getDate(),
+		'N'
+		)
+	</insert>
+
+
+</mapper>
